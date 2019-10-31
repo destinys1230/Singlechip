@@ -1,0 +1,182 @@
+ORG	0000H
+LJMP	START
+ORG	000BH	;T0中断服务程序
+LJMP	T0_INT
+ORG	0040H
+
+START:
+	P4	EQU	0C0H	;P4地址
+	P4SW	EQU	0BBH	;P4方式控制字地址
+	;MOV	P4,#0FFH
+	CLK	EQU	P4.4
+	DAT	EQU	P4.5
+	MOV	P4SW,#30H
+
+	SWH1	EQU	P3.6	;S1
+	SWH2	EQU	P3.7	;S2
+	IN1	EQU	P3.2
+	IN2	EQU	P1.0
+	CE1	EQU	P1.3
+	CE2	EQU	P1.4
+
+	;MOV	SP,#60H
+	MOV	DPTR,#TABLE
+
+	MOV	R0,#0
+	MOV	R1,#0
+	MOV	R2,#0
+	MOV	R3,#50
+	MOV	R5,#1
+	MOV	R6,#1;从11开始
+
+	SETB	CE1	;双四拍工作模式,只要将CE1和CE2分别置为高
+	SETB	CE2
+	SETB  	EA	;EA是整个CPU 的中断允许标志。当EA＝1时，CPU可以响应中断；
+	SETB	ET0	;ET1和ET0是T1和T0的中断允许位
+
+	MOV	TMOD,#01H;T0计数器，方式1
+	MOV	TL0,#3EH
+	MOV	TH0,#5DH;计数初值
+	SETB	TR0	;运行控制位TR0和TR1分别控制两个定时器是否允许计数
+
+LL1:	LJMP	LL1
+
+;...............中断服务程序.....................
+T0_INT:
+	PUSH	ACC
+	;PUSH	PSW
+	;PUSH	DPL
+	;PUSH	DPH
+	CLR	TR0
+	MOV	TL0,#3EH
+	MOV	TH0,#5DH;计数初值
+	SETB	TR0
+	DJNZ	R3,IEND
+	
+	JNB	SWH1,V1;为0跳转（SWH1按下）
+	MOV	R3,#5;慢速
+	JMP	V2
+V1:	MOV	R3,#1;快速
+
+V2:	LCALL	DISPLAY;显示步数
+	LCALL	STEP;电机转动
+	
+IEND:	
+	;POP	DPH
+	;POP	DLH
+	;POP	PSW
+	POP	ACC
+	RETI
+
+
+;...............取段码 显示数字..............................
+DISPLAY:
+	MOV	A,R0
+	MOVC	A,@A+DPTR
+	LCALL	SENDNUM
+
+	MOV	A,R1
+	MOVC	A,@A+DPTR
+	LCALL	SENDNUM
+
+	MOV	A,R2
+	MOVC	A,@A+DPTR
+	LCALL	SENDNUM		
+
+	RET
+
+
+;.....................按位送数............................
+SENDNUM:
+	MOV	R4,#8
+SE1:	CLR	CLK
+	RLC	A
+	MOV	DAT,C
+	SETB	CLK
+	DJNZ	R4,SE1
+
+	RET
+
+
+
+STEP:	
+	JB	SWH2,SHUN;按下，跳转，顺时针
+
+;.......................逆时针...........................
+	CJNE	R5,#1,N1;R5不为1转移(R5==0)
+	CJNE	R6,#1,N3;R6不为1转移(R6==0)
+	CLR	IN1;(R5==1,R6==1)
+	SETB	IN2;送01
+	MOV	R5,#0
+	MOV	R6,#1
+	LJMP	ST0
+
+N1:	CJNE	R6,#1,N2;R6不为1转移(R6==0)
+	CLR	IN1;(R5==0,R6==1)
+	CLR	IN2;送00
+	MOV	R5,#0
+	MOV	R6,#0
+	LJMP	ST0
+
+N2:	SETB	IN1;(R5==0,R6==0)
+	CLR	IN2;送10
+	MOV	R5,#1
+	MOV	R6,#0
+	LJMP	ST0
+
+N3:	SETB	IN1;(R5==1,R6==0)
+	SETB	IN2;送11
+	MOV	R5,#1
+	MOV	R6,#1
+	LJMP	ST0
+	
+
+;.....................顺时针...........................	
+SHUN:
+	CJNE	R5,#1,SH1;R5不为1转移(R5==0)
+	CJNE	R6,#1,SH3;R6不为1转移(R6==0)
+	SETB	IN1;(R5==1,R6==1)
+	CLR	IN2;送10
+	MOV	R5,#1
+	MOV	R6,#0
+	LJMP	ST0
+
+SH1:	CJNE	R6,#1,SH2;R6不为1转移(R6==0)
+	SETB	IN1;(R5==0,R6==1)
+	SETB	IN2;送11
+	MOV	R5,#1
+	MOV	R6,#1
+	LJMP	ST0
+
+SH2:	CLR	IN1;(R5==0,R6==0)
+	SETB	IN2;送01
+	MOV	R5,#0
+	MOV	R6,#1
+	LJMP	ST0
+
+SH3:	CLR	IN1;(R5==1,R6==0)
+	CLR	IN2;送00
+	MOV	R5,#0
+	MOV	R6,#0
+	LJMP	ST0
+
+;...................增加步数...........................	
+ST0:	INC	R0
+	CJNE	R0,#10,ST1
+	MOV	R0,#0
+	INC	R1
+ST1:	CJNE	R1,#10,ST2
+	MOV	R1,#0
+	INC	R2
+ST2:	CJNE	R2,#10,ST3
+	MOV	R2,#0
+
+ST3:	RET
+
+;...................段码表......................................
+TABLE:
+	DB	0C0H,0F9H,0A4H,0B0H,99H,92H,82H,0F8H,80H,90H
+
+
+
+END

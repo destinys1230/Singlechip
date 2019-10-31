@@ -1,0 +1,92 @@
+3C1 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+C1 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+C1 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+C2 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+C2 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+C2 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+C3 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+C3 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+C3 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+CR1 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+CR1 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+CR1 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+D? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+D? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+D? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+D? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+D? Error: Duplicate Designator ATTRIBUTE entered
+D? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+D? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+D? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+D? Error: Duplicate Designator ATTRIBUTE entered
+D? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+D? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+D? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+D? Error: Duplicate Designator ATTRIBUTE entered
+D? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+D? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R9 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R9 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R9 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Duplicate Designator ATTRIBUTE entered
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Duplicate Designator ATTRIBUTE entered
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Duplicate Designator ATTRIBUTE entered
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Duplicate Designator ATTRIBUTE entered
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Duplicate Designator ATTRIBUTE entered
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Duplicate Designator ATTRIBUTE entered
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+R? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+R? Error: Duplicate Designator ATTRIBUTE entered
+R? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+R? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+S? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+S? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+S? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+S? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+S? Error: Duplicate Designator ATTRIBUTE entered
+S? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+S? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+S? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+S? Error: Duplicate Designator ATTRIBUTE entered
+S? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+S? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+S? Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+S? Error: Duplicate Designator ATTRIBUTE entered
+S? Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+S? Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+U1 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+U1 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+U1 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+U2 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+U2 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+U2 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+U3 Error: Pin order data (PINS=1:[<pins>]) not in READ ONLY field 4. Pins sorted by pin-name.
+U3 Error: Part type must be entered in READ ONLY field 1: type=<part type>(<spice prefix>)
+U3 Error: Netlist data must be entered in READ ONLY field 5: netlist=<netlist data>
+U?A Error: Duplicate Designator ATTRIBUTE entered
+U?A Error: Duplicate Designator ATTRIBUTE entered
+Setup Error: The following net name contains an illegal character: NetD?_A
+Setup Error: The following net name contains an illegal character: NetD?_K
+Setup Error: The following net name contains an illegal character: NetR?_1
+Setup Error: The following net name contains an illegal character: NetU?_1
+Setup Error: The following net name contains an illegal character: NetU?_3

@@ -1,0 +1,121 @@
+#include<reg52.h>
+#include<intrins.h>
+typedef unsigned int uint;
+typedef unsigned char uchar;
+
+sbit KEY1=P3^6;
+sbit KEY2=P3^7;
+sbit out=P1^0;
+//led
+sfr P4=0xc0;
+sfr P4SW=0xbb;
+sbit DCLK=P4^4;
+sbit LED=P4^5;
+
+int i,j,k,a,b,c,d,temp;
+int count=0;
+char code ledCode[10]=
+{0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+uint s = 0, time = 0;
+int flag = 0,flag2=0;
+
+void wait(unsigned int count){
+	while(count--){
+		_nop_();
+	}
+}
+void waitL(int ccc){
+	k=0xfffff;
+	while(ccc--){
+		while(k--);
+	}
+}
+void send2LED(char temp){
+	for(d=0;d<8;d++){
+		DCLK=0;
+		LED=temp & 0x80;
+		DCLK=1;
+		temp<<=1;
+	}
+}
+
+void outLed(int num){
+	a=num/100;
+	b=(num-a*100)/10;
+	c=num-a*100-b*10;
+	send2LED(ledCode[c]);
+	send2LED(ledCode[b]);
+	send2LED(ledCode[a]);
+}
+
+void delay(uint x)
+{
+	int n = 100;
+	while(x--)
+	{
+    while(n--)
+		  _nop_();
+	}
+}
+
+void ex_int0() interrupt 0
+{
+		delay(1);
+	if(INT0 == 0)
+	{	
+    flag= 1;
+	}
+}
+
+void t0_int0() interrupt 1
+{
+		out = ~out;
+    count += 1;
+}
+
+
+void t1_int0() interrupt 3
+{
+		flag2=1;
+}
+
+
+void main()
+{
+    P4SW = 0x70;
+    out = 0;
+    TMOD = 0x12;
+    IT0 = 1;
+    EA = 1;
+    ET0 = 1;
+    while(1)
+		{
+			TH0 = 0xF4;TL0 = 0xF4;
+			TH1 = 0;TL1 = 0;
+			IE = 0x8A;
+			TR0 = 1;TR1 = 1;
+			flag = 0;
+			flag2=0;
+			while(count<4);
+			count=0;
+			TR0=0;
+			ET0 = 0;
+			out = 0;
+			delay(1);
+			EX0 = 1;
+			while(!flag)
+				if(flag2==1)
+					break;
+			if(flag2==1)
+				continue;
+			EX0 = 0;
+			TR1 = 0;
+			time = TH1;
+			time <<= 8;
+			time |= TL1;
+			s = time * 0.017;
+			outLed(s);
+			waitL(0x03);                 
+		}
+}
+

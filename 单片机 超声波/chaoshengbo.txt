@@ -1,0 +1,128 @@
+#include <reg52.h>
+#include <stdio.h>
+#include <intrins.h>
+
+
+sbit KEY1=P3^6;
+sbit KEY2=P3^7;
+sbit out=P1^1;
+
+//led
+sfr P4=0xc0;
+sfr P4SW=0xbb;
+sbit DCLK=P4^4;
+sbit LED=P4^5;
+
+
+int i,j,k,a,b,c,d,temp;
+int count=0;
+int juli=0;
+int x = 0;
+char code ledCode[10]=
+{0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+
+void wait(unsigned int count){
+	while(count--){
+		_nop_();
+	}
+}
+
+void send2LED(char temp){
+	for(d=0;d<8;d++){
+		DCLK=0;
+		LED=temp & 0x80;
+		DCLK=1;
+		temp<<=1;
+	}
+}
+
+void outLed(int num){
+	a=num/100;
+	b=(num-a*100)/10;
+	c=num-a*100-b*10;
+	send2LED(ledCode[c]);
+	send2LED(ledCode[b]);
+	send2LED(ledCode[a]);
+}
+
+
+void ex_int0() interrupt 0
+{
+		count++;
+}
+
+void t0_int0() interrupt 1
+{
+	TR0=0;
+	out = 1;
+	TH0= 0xf4;    //12us
+	TL0= 0xf4;
+	TR0=1;
+}
+
+
+void t1_int0() interrupt 3
+{
+	TR1=0;
+	TH1=0x00;
+	TL1=0x00;
+	TR1=1;
+}
+
+void initTimer(){
+	P4SW=0x30;
+
+	TMOD=0x12;   //???? 0,1,16?
+	
+	
+	TH0= 0xf4;    //12us
+	TL0= 0xf4;
+
+	TH1 = 0x00;           
+	TL1 = 0x00;
+
+	IT0=1;  //????0???????? ????????
+	EA=1;
+	
+	
+	EX0 = 0; //3?那??‘米?那㊣o辰赤a2??D??㊣?D?1?㊣?     
+	ET0 = 1;//?“那㊣?¯?D???那D赤㏒??a?“那㊣?¯		
+
+	//???????,???????,??INT0
+	ET1 = 1;
+	EX0=1;
+
+	
+}
+void waitL(int ccc){
+	k=0xfffff;
+	while(ccc--){
+		while(k--);
+	}
+}
+int main()
+{
+	int ceshi = 456;
+	initTimer();
+	while(1)
+	{
+		count=0;
+		TH0= 0xf4;    //12us
+		TL0= 0xf4;
+		TH1 = 0x00;           
+		TL1 = 0x00;
+		TR0=1;   //????
+		TR1=1;
+		while(count<4);
+			x=TH1;
+			x<<=8;
+			x|=TH2;
+			x = 65536-x;
+			x = x-7*12;
+			juli = 170*x/1000000;
+		outLed(juli);
+		waitL(0x03);
+	}
+}
+		
+		

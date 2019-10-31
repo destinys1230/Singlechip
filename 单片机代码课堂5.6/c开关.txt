@@ -1,0 +1,146 @@
+#include<reg52.h>
+typedef unsigned int uint;
+sfr   P4=0xC0;
+sfr   P4SW=0xBB;
+
+sbit  s1=P3^6;
+sbit  s2=P3^7;
+sbit  CE1=P1^1;
+sbit  CE2=P1^4;
+sbit  IN1=P3^2;
+sbit  IN2=P1^0;
+sbit  CLK=P4^4;
+sbit  DAT=P4^5;
+
+uint  count=0;                    //用于计已转动的步数
+int   flag=0;                     //用于给IN1、IN2传值
+//二极管显示码，存放在code区
+uint code tab[] = {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};    
+int main()
+{
+    P4SW=0x70;    //p4为通用io口
+    TMOD=0x01;       //方式寄存器 T016位定时器
+    EA=1;
+    ET0=1;
+    TR0=1;
+    CE1=CE2=1;
+    
+    while(1);
+}
+void rotateShun(int flag)
+{
+    //01 11 10 00
+    switch(flag)
+    {
+        case 0:    IN1=0;
+                IN2=1;
+                break;
+        case 1:    IN1=1;
+                IN2=1;
+                break;
+        case 2:    IN1=1;
+                IN2=0;
+                break;
+        case 3:    IN1=0;
+                IN2=0;
+                break;        
+    }
+}
+/*01 11 10 00
+* 反方向输出为
+* 00 10 11 01 
+* 摁下按键后，需向后走一位，所以为
+* 10 11 01 00
+*/
+void rotateNi(int flag)
+{
+    //10 11 01 00
+    switch(flag)
+    {
+        case 0:    IN1=1;
+                IN2=0;
+                break;
+        case 1:    IN1=1;
+                IN2=1;
+                break;
+        case 2:    IN1=0;
+                IN2=1;
+                break;
+        case 3:    IN1=0;
+                IN2=0;
+                break;        
+    }
+}
+
+void show(uint cnt){                   //显示一个数字
+    uint m, c,n;
+    m = tab[cnt];
+    for (n = 0; n < 8; n++){
+        CLK = 0;
+        //按位逻辑与，和1000 0000与，最高位保留，其他位置0，此处也可以与0x80比较大小来判断
+        c= m & 0x80;                   //每次取一位，送往DAT
+        if(c==0)
+            DAT=0;
+        else
+            DAT=1;
+        CLK = 1;
+        m<<= 1;
+    }
+}
+
+void display(uint cnt){                //显示
+    show(cnt%10);                      //个位
+    cnt /= 10;
+    show(cnt%10);                      //十位
+    show(cnt/10);                      //百位
+}    
+
+void timeInt0() interrupt 1
+{
+    if(s1==1)
+    {
+        /*不按s1，10r/min=240pace/min=960次/min，
+        *即每分钟给IN1和IN0送值960次，每次间隔60/960=0.0625s=62.5ms
+        */
+        TH0=(65536-62500)/256;
+        TL0=(65536-62500)%256;
+        if(s2==1)
+        {
+            rotateShun(flag);
+        }
+        if(s2==0)
+        {
+            rotateNi(flag);
+        }
+    }
+    if(s1==0)
+    {
+        /*按下s1，60r/min=1440pace /min=5760次/min，
+        *即每分钟给IN1和IN0送值960次，每次间隔60/5760ms
+        */
+        TH0=(65536-(uint)(60000/5760))/256;
+        TL0=(65536-(uint)(60000/5760))%256;
+        if(s2==1)
+        {
+            rotateShun(flag);
+        }
+        if(s2==0)
+        {
+            rotateNi(flag);
+        }
+    }
+    flag++;
+    if(flag>3) 
+    {
+        flag=0;
+        count++;
+        if(count < 999)
+        {
+            display(count);
+        }
+        else{
+            count = 0;
+            display(count);
+        }
+    }
+}
